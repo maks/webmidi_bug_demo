@@ -1,7 +1,8 @@
 import 'dart:html';
 
 import 'package:js/js.dart';
-import 'package:js_bindings/bindings/webmidi.dart';
+import 'package:js/js_util.dart' as jsutil;
+import 'package:js_bindings/js_bindings.dart' as html;
 
 @JS()
 external void getMidiInputs(Function f);
@@ -9,30 +10,19 @@ external void getMidiInputs(Function f);
 @JS()
 external void getMidiMaplike(Function f);
 
-void main() {
+void showInputs(dynamic a, dynamic b, dynamic c) {
+  print('got args from forEach: [$a] [$b] [$c]');
+  final inp = a as MidiInput;
+  print('input name: ${inp.name}');
+}
+
+void main() async {
   querySelector('#output')?.text = 'Your Dart app is running.';
 
-  // below shows that receiving a normal JS array of MIDIInput objects
-  // works fine in Dart
-  void successForInputs(dynamic inputs) {
-    print('DART got array of inputs: $inputs');
+  final access = await html.window.navigator
+      .requestMIDIAccess(html.MIDIOptions(sysex: true, software: false));
 
-    for (var input in (inputs as List<dynamic>)) {
-      print('input name in Dart: ${(input as MIDIInput).name}');
-    }
-  }
+  final inputs = access.inputs;
 
-  getMidiInputs(allowInterop(successForInputs));
-
-  // UNCOMMENT code below to see BUGGY behaviour of JS "maplikes"
-  // when they come across into Dart
-
-  // void successForMapLike(dynamic inputs) {
-  //   print('DART got map of inputs: $inputs');
-
-  //   for (var input in (inputs as MidiInputMap).keys) {
-  //     print('input in Dart: $input');
-  //   }
-  // }
-  // getMidiMaplike(allowInterop(successForMapLike));
+  jsutil.callMethod(inputs, 'forEach', [allowInterop(showInputs)]);
 }
