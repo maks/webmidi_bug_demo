@@ -226,12 +226,19 @@ packages:
     source: hosted
     version: "1.0.3"
   js:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: js
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.4"
+  js_bindings:
+    dependency: "direct main"
+    description:
+      name: js_bindings
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.5"
   json_annotation:
     dependency: transitive
     description:
