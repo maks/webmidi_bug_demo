@@ -1,4 +1,4 @@
-var getMidiAccess =
+var getMidiMaplike =
   function (callback) {
     console.log('getMidi returning');
     navigator.requestMIDIAccess({ sysex: true }).then((midiAccess) => {
@@ -9,7 +9,7 @@ var getMidiAccess =
         inputs.push(input);
       });
 
-      callback(midiAccess)
+      callback(midiAccess.inputs)
     });
   }
 
@@ -23,7 +23,7 @@ var getMidiInputs =
         console.log(`input name: ${name} input:${input.name}`);
         inputs.push(input);
       });
-      
+
       callback(inputs)
     });
   }  
